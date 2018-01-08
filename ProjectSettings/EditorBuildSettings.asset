@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/scenes/startMenu/Start Menu.unity
+    guid: d17c17097ebe94ddea48ec5f273d02a7
+  - enabled: 1
+    path: Assets/scenes/transistionScene/Matrix.unity
+    guid: 1093337b022fd6d43a551a50daf15c41
+  - enabled: 1
+    path: Assets/scenes/gameOverScene/gameOverScene.unity
+    guid: 2e9f916d8615846beb595077d29ef19d
+  - enabled: 0
+    path: Assets/Matt/Ragequit.unity
+    guid: 88795e3829e554a44a1bf180f79e73d7
+  - enabled: 1
+    path: Assets/scenes/Burglar/Burglar.unity
+    guid: a30c8acd51edc5b4095e481c77b5017f
+  - enabled: 1
+    path: Assets/scenes/GoFish/GoFish.unity
+    guid: b289a4df2fca39740a80981c39432f2b
+  - enabled: 1
+    path: Assets/scenes/bouncingFood/bouncingFood.unity
+    guid: 86662d3edc0eaff48a34f06457c30010
+  - enabled: 1
+    path: Assets/scenes/flashlightGame/flashlight.unity
+    guid: 94020e8c69fcc43e2b2d0fe4763e5ea1
