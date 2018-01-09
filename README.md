@@ -6,7 +6,7 @@ It is an eclectic combination of fast-paced microgames that get more difficult a
 ## Built With
 * Unity 2017.1.0p5
 * SteamVR library
-* Many 3D models from taken as free use from [Poly](https://poly.google.com/), Google's extensive 3D object library.
+* Many 3D models taken as free use from [Poly](https://poly.google.com/), Google's extensive 3D object library.
 
 ## Authors
 * Brett Moody: bam547@nyu.edu
