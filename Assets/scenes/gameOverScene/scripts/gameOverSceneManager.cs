@@ -24,6 +24,7 @@ public class gameOverSceneManager : MonoBehaviour {
 	// Set up Materials.
 	public Material firstGameOverMat;
 	public Material tasksCompletedMat;
+	public Material PyramidMat;
 
 	// Set up renderers.
 	Renderer floorRend;
@@ -56,6 +57,7 @@ public class gameOverSceneManager : MonoBehaviour {
 
 	// Canvas which has all of our tasksCompleted text objects.
 	public Canvas tasksCompletedCanvas;
+	public GameObject myCanvas;
 
 	void Awake () {
 		// This variable represents the total number of time it takes for the scene to pass:
@@ -88,13 +90,14 @@ public class gameOverSceneManager : MonoBehaviour {
 
 
 		// Paint the walls. 
-		PaintVerticalWalls (firstGameOverMat);
+		PaintVerticalWalls (firstGameOverMat, firstGameOverMat);
 		// Set up the gameOverAgent sound.
 		gameOverAgentSFXPlayer.clip = intialGameOverSound;
 		// Play the gameOverAgent sound.
 		gameOverAgentSFXPlayer.Play();
 		// The tasks completed canvas is not active to begin with.
 		tasksCompletedCanvas.enabled = false;
+		myCanvas.SetActive (false);
 
 
 
@@ -136,8 +139,9 @@ public class gameOverSceneManager : MonoBehaviour {
 		} else if (sceneTimer >= secondsUntilTasksPhase && taskCompletedPhaseDone == false ) {
 			// Turn on canvas:
 			tasksCompletedCanvas.enabled = true;
+			myCanvas.SetActive (true);
 			// Paint the walls with tasksCompletedMat, 
-			PaintVerticalWalls (tasksCompletedMat);
+			PaintVerticalWalls (tasksCompletedMat, PyramidMat);
 			// Play the tasksCompletedSFX.
 			gameOverAgentSFXPlayer.PlayOneShot (tasksCompletedSFX);
 			// Play
@@ -150,11 +154,11 @@ public class gameOverSceneManager : MonoBehaviour {
 	}
 
 	// Use this function to paint the front, back, right, and left wall. 
-	void PaintVerticalWalls (Material inputMaterial) {
-		rightWallRend.sharedMaterial = inputMaterial;
-		leftWallRend.sharedMaterial = inputMaterial;
-		frontWallRend.sharedMaterial = inputMaterial;
-		backWallRend.sharedMaterial = inputMaterial;
+	void PaintVerticalWalls (Material inputMaterial1, Material inputMaterial2) {
+		rightWallRend.sharedMaterial = inputMaterial2;
+		leftWallRend.sharedMaterial = inputMaterial2;
+		frontWallRend.sharedMaterial = inputMaterial1;
+		backWallRend.sharedMaterial = inputMaterial1;
 
 	}
 }

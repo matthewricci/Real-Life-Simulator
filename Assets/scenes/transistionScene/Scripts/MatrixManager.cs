@@ -305,6 +305,12 @@ public class MatrixManager : MonoBehaviour {
 				heartsList2 [i].material.color = Color.red;
 				heartsList3 [i].material.color = Color.red;
 				heartsList4 [i].material.color = Color.red;
+			} else if ((gameOverlordScript.didPlayerWin && i >= gameOverlordScript.lives)
+				|| (!gameOverlordScript.didPlayerWin && i > gameOverlordScript.lives) ) {
+				Destroy (heartsList1 [i]);
+				Destroy (heartsList2 [i]);
+				Destroy (heartsList3 [i]);
+				Destroy (heartsList4 [i]);
 			}
 		}
 		if (subtractLife && gameOverlordScript.lives < heartsList1.Count) {	// Count is the same across all fours lists

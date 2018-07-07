@@ -30,6 +30,10 @@ public class movingGhostCode : MonoBehaviour {
 	float randomYValue;
 	float randomZValue;
 
+	public Animator ghostAnim;
+
+	float timeAlive;
+
 	// Use this for initialization
 	void Start () {
 		// Get the Ghost's Mesh Renderer.
@@ -38,10 +42,22 @@ public class movingGhostCode : MonoBehaviour {
 		ghostSphereCollider = this.GetComponent<SphereCollider> ();
 		// Get the GhostGameAgent GameObject.
 		ghostGameAgentGameObject = GameObject.Find ("ghostGameAgentGameObject");
+
+		ghostSFXPlayer.mute = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+
+		timeAlive += Time.deltaTime;
+
+		if (timeAlive > .5f) {
+			ghostSFXPlayer.mute = false;
+		}
+
+
+
 		// This is the ray in front of the ghost.
 		Ray ghostRay = new Ray( this.transform.position, this.transform.forward );
 		// This determines how close the ghost can get to the wall before turning.
@@ -73,6 +89,16 @@ public class movingGhostCode : MonoBehaviour {
 
 	}
 
+	void OnTriggerEnter (Collider other) {
+
+		if (other.gameObject.tag == "flashlightConeCollider") {
+			// Turn on the flashlight animation.
+			ghostAnim.SetBool ("Flashlight", true);
+		}
+
+		Debug.Log ("Entering the ghost.");
+	}
+
 	void OnTriggerStay (Collider other) {
 		// If the Ghost is Touching the Flashlight's Cone Collider.
 		if (other.gameObject.tag == "flashlightConeCollider") {
@@ -94,6 +120,10 @@ public class movingGhostCode : MonoBehaviour {
 				// Turn off the Ghost's Sphere Collider.
 				ghostSphereCollider.enabled = false;
 
+				ghostSFXPlayer.loop = false;
+
+				this.BroadcastMessage("turnOffGhostMethod");
+
 				ghostGameAgentGameObject.GetComponent<ghostGameAgent>().ghostsToZap -= 1;
 
 			}
@@ -102,5 +132,11 @@ public class movingGhostCode : MonoBehaviour {
 
 	void OnTriggerExit (Collider other) {
 		timeFlashlightOnGhost = 0;
+		if (other.gameObject.tag == "flashlightConeCollider") {
+			// Turn on the flashlight animation.
+			ghostAnim.SetBool ("Flashlight", false);
+		}
+
+		Debug.Log ("Leaving the ghost.");
 	}
 }

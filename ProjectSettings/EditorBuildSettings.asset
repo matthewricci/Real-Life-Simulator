@@ -15,17 +15,23 @@ EditorBuildSettings:
     path: Assets/scenes/gameOverScene/gameOverScene.unity
     guid: 2e9f916d8615846beb595077d29ef19d
   - enabled: 0
-    path: Assets/Matt/Ragequit.unity
+    path: Assets/scenes/ragequite/Ragequit.unity
     guid: 88795e3829e554a44a1bf180f79e73d7
   - enabled: 1
     path: Assets/scenes/Burglar/Burglar.unity
     guid: a30c8acd51edc5b4095e481c77b5017f
-  - enabled: 1
+  - enabled: 0
     path: Assets/scenes/GoFish/GoFish.unity
     guid: b289a4df2fca39740a80981c39432f2b
+  - enabled: 1
+    path: Assets/scenes/GoFish/PistachioPlace.unity
+    guid: baa2300f6451b434b911819452265314
   - enabled: 1
     path: Assets/scenes/bouncingFood/bouncingFood.unity
     guid: 86662d3edc0eaff48a34f06457c30010
   - enabled: 1
-    path: Assets/scenes/flashlightGame/flashlight.unity
+    path: Assets/scenes/flashlightGame/ghostGame.unity
     guid: 94020e8c69fcc43e2b2d0fe4763e5ea1
+  - enabled: 0
+    path: Assets/scenes/bulletHell/bulletHell.unity
+    guid: 70083c45b4558454cacceecfba3348e9

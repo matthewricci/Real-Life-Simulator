@@ -14,7 +14,7 @@ public class bouncingObjectGameAgent : MonoBehaviour {
 
 	//IRRELEVANT: Use num of BouncedEggs now.
 	// How long does the player have to stay alive?
-	float eggTimer = 10;
+	float eggTimer = 15;
 
 	// The variable which tracks how much time has gone by since the scene started.
 	public float roundTimer = 0;
@@ -34,9 +34,18 @@ public class bouncingObjectGameAgent : MonoBehaviour {
 	// Player for this game:
 	public AudioSource eggGamePlayerSFX;
 	// SFX to play if you win.
-	public AudioClip eggGameVictory;
+	public AudioClip eggGameVictorySFX;
 	// SFX to play if you lose.
-	public AudioClip eggGameDefeat;
+	public AudioClip eggGameDefeatSFX;
+
+
+	public AudioSource eggGameMusicPlayer;
+
+	public AudioClip eggGameVictoryMusic;
+
+	public AudioClip eggGameDefeatMusic;
+
+
 
 	// The player.
 	public Transform player;
@@ -60,7 +69,7 @@ public class bouncingObjectGameAgent : MonoBehaviour {
 	// Float for egg Z position.
 	float eggZPosValue;
 	// What height should the first egg start from?
-	public float intialEggHeight = 10f;
+	public float intialEggHeight = 1000;
 
 	// This variable represents the total number of time it takes for the scene to pass:
 	float totalTimeForWatch;
@@ -98,7 +107,11 @@ public class bouncingObjectGameAgent : MonoBehaviour {
 	// Main function for Egg Falling Game.
 	void eggFallingGame (int difficultyLevel) {
 		// Determine number of eggs to spawn by difficulty level.
-		literalEggsToSpawn = difficultyLevel * 2;
+		literalEggsToSpawn = difficultyLevel +1;
+
+		if (difficultyLevel == 1) {
+			literalEggsToSpawn = 1;
+		}
 
 		// Add time to the round timer.
 		roundTimer = roundTimer + Time.deltaTime;
@@ -123,28 +136,37 @@ public class bouncingObjectGameAgent : MonoBehaviour {
 			// measure how much time has gone by since the microgame is over,
 			timeSinceMicrogameOver += Time.deltaTime;
 
-			if (inDefeatRoom == false && microGameVictory == false && timeSinceMicrogameOver >= 1f) {
+			if (inDefeatRoom == false && microGameVictory == false && timeSinceMicrogameOver >= 2f) {
 				// Teleport the player to the defeat position.
 				player.position = defeatTeleportPoint.position;
 
 				// Set up and play the defeat SFX.
-				eggGamePlayerSFX.clip = eggGameDefeat;
+				eggGamePlayerSFX.clip = eggGameDefeatSFX;
 
 				// Play the defeat SFX
-				eggGamePlayerSFX.Play ();
+				//eggGamePlayerSFX.Play ();
+
+				eggGameMusicPlayer.clip = eggGameDefeatMusic;
+
+				eggGameMusicPlayer.Play ();
 
 				// Close the gate:
 				inDefeatRoom = true;
 
-			} else if (inVictoryRoom == false && microGameVictory == true && timeSinceMicrogameOver >= 1f) {
+			} else if (inVictoryRoom == false && microGameVictory == true && timeSinceMicrogameOver >= 2f) {
 				// Teleport the player to the win position.
 				player.position = victoryTeleportPoint.position;
 
 				// Set up and play the victory SFX.
-				eggGamePlayerSFX.clip = eggGameVictory;
+				eggGamePlayerSFX.clip = eggGameVictorySFX;
 
 				// Play the victory SFX:
-				eggGamePlayerSFX.Play ();
+				//eggGamePlayerSFX.Play ();
+
+
+				eggGameMusicPlayer.clip = eggGameVictoryMusic;
+
+				eggGameMusicPlayer.Play();
 
 				// Close the game:
 				inVictoryRoom = true;
@@ -231,6 +253,10 @@ public class bouncingObjectGameAgent : MonoBehaviour {
 
 		float thisDifficulty = (numOfEggs / 2);
 
+		// Override for level one.
+		if (gameOverlordScript.difficulty == 1) {
+			thisDifficulty = 1;
+		} 
 
 		// Spawn the number of eggs.
 		for (int i = 0; i < numOfEggs; i++) {
@@ -253,8 +279,8 @@ public class bouncingObjectGameAgent : MonoBehaviour {
 
 			// Add in randomization.
 
-			eggXPosValue = Random.Range(-.65f, 3.2f);
-			eggZPosValue = Random.Range (2.4f, 5.7f);
+			eggXPosValue = Random.Range(-.2f, 1.3f);
+			eggZPosValue = Random.Range (2.6f, 5.2f);
 			// Spawn the eggs at this preset location.
 
 			Vector3 posOne = new Vector3 (eggXPosValue, thisEggHeight, eggZPosValue);

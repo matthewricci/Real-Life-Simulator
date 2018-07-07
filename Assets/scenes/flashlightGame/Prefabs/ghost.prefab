@@ -110,7 +110,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 5c9fc85c2802f4454af2006981dbe9b0, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.16
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -193,6 +193,7 @@ MonoBehaviour:
   timeNeededForGhostToZap: 0.5
   ghostSFXPlayer: {fileID: 82519691330565912}
   ghostYellingSFX: {fileID: 8300000, guid: 7ba14f4542052429dac06da3867ba0dd, type: 3}
+  ghostAnimation: {fileID: 0}
   spawnAgain: 0
 --- !u!135 &135077317144937242
 SphereCollider:

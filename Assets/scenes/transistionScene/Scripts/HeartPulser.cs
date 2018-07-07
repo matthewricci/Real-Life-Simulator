@@ -37,14 +37,18 @@ public class HeartPulser : MonoBehaviour {
 			);
 		}
 
-		if(thisRenderer.material.color == Color.white){
-			hoveringEffect.enabled = false;
-			thisRigidbody.useGravity = true;
+		if (thisRenderer != null) {
+			if (thisRenderer.material.color == Color.white) {
+				//print ("Killing the hover on: " + this.name);
+				hoveringEffect.enabled = false;
+				thisRigidbody.useGravity = true;
+			}
 		}
 	}
 
-	void OnCollisionEnter () {
-		hoveringEffect.enabled = false;
-		thisRigidbody.useGravity = true;
-	}
+//	void OnCollisionEnter (Collision coll) {
+//		print ("Killing the hover, collision with: " + coll.gameObject.name);
+//		hoveringEffect.enabled = false;
+//		thisRigidbody.useGravity = true;
+//	}
 }

@@ -33,6 +33,10 @@ public class BurglarPostgame : MonoBehaviour {
 
 	public AudioSource carAcceleration;
 
+	public AudioSource victoryMusic;
+
+	public AudioSource defeatMusic;
+
 	// Use this for initialization
 	void Start () {
 		engaged = false;
@@ -59,6 +63,9 @@ public class BurglarPostgame : MonoBehaviour {
 				}
 				if (!(carAcceleration.isPlaying)) {
 					carAcceleration.Play ();
+				} 
+				if (!(victoryMusic.isPlaying)) {
+					victoryMusic.Play();
 				}
 
 			} else {					// else player lost
@@ -68,6 +75,10 @@ public class BurglarPostgame : MonoBehaviour {
 
 				if (!(sigh.isPlaying)) {	// if not already sighing
 					sigh.Play ();			// start to sigh
+				}
+
+				if (!(defeatMusic.isPlaying)) {	// if not already sighing
+					defeatMusic.Play ();			// start to sigh
 				}
 			}
 

@@ -28,7 +28,7 @@ public class BurglarManager : MonoBehaviour {
 	public int totalValueStolen;
 //	public int newBrokenItems;
 
-	public float timer = 7.0f;			// player gets limited amount of time
+	public float timer = 20;			// player gets limited amount of time
 	public float totalTimeForWatch;
 	//public float angerLevel; 		// track current anger level
 	int difficulty;
@@ -37,11 +37,16 @@ public class BurglarManager : MonoBehaviour {
 	public bool gameWon;			// flag representing if the win condition has been met
 	public bool postgameInitiated;	// flag representing whether post-game functions have been called
 
+	public AudioSource neutralMusicAS; // The music that plays during the game.
+
 
 	void Awake() {
-		timer = 7.0f;
+		//timer = 7.0f;
 		totalTimeForWatch = timer;
 		gameOverlordScript.wristWatchTime = totalTimeForWatch;
+		if (!(neutralMusicAS.isPlaying)) {	// if not already sighing
+			neutralMusicAS.Play ();			// start to sigh
+		}
 	}
 
 	// Use this for initialization
@@ -52,12 +57,20 @@ public class BurglarManager : MonoBehaviour {
 		totalValueStolen = 0;
 //		newBrokenItems = 0;
 		difficulty = gameOverlordScript.difficulty;
-		if (difficulty >= 2) {							// logic for scaling the difficulty 
-			difficulty2.SetActive (true);				// if difficulty is 2 or higher, activate second tier of items
-		}
-		if (difficulty >= 3) {							// if difficulty is 3 or higher, activate third tier of items
+		if (difficulty == 1) {					// logic for scaling the difficulty
+			difficulty1.SetActive (true);
+			timer = 15f;
+		} else if (difficulty == 2) {
+			difficulty2.SetActive (true);
+		} else {
 			difficulty3.SetActive (true);
 		}
+//		if (difficulty >= 2) {							// logic for scaling the difficulty 
+//			difficulty2.SetActive (true);				// if difficulty is 2 or higher, activate second tier of items
+//		}
+//		if (difficulty >= 3) {							// if difficulty is 3 or higher, activate third tier of items
+//			difficulty3.SetActive (true);
+//		}
 
 		gameOver = false;
 		gameWon = false;
@@ -93,6 +106,7 @@ public class BurglarManager : MonoBehaviour {
 		timer -= Time.deltaTime;
 		// if game has finished
 		if (gameOver) {
+			neutralMusicAS.mute = true; // Turn off the neutral music.
 			if (timer < 0.0f) {
 				timer = 99.0f;	// hacky fix to keep the transitioning working once the microgame ends
 				// if player won and win/loss repsonse has played, set gameOverlord values to true
@@ -146,19 +160,16 @@ public class BurglarManager : MonoBehaviour {
 	// checks each Update() if the game should finish itself up
 	void checkIfWon(){
 		
-		// if player has relaxed fully
-		if (totalValueStolen >= Mathf.Min(300, 100 + (50 * gameOverlordScript.difficulty)) ) {	// WIN CONDITION: Player must steal a minimum of either
+		//if (totalValueStolen >= Mathf.Min(500, 100 + (100 * gameOverlordScript.difficulty)) ) {	// WIN CONDITION: Player must steal a minimum of either
+		if (totalValueStolen > 500){
 			timer = 3.0f;													// 10 items, or 2 + (2*difficulty) items; whichever is lower
 			gameOver = true;												// this limits the difficulty to something feasible while
 			gameWon = true;													// still being scalable
 		} 
-
-		// else if anger has overtaken the player
-		//else if (angerLevel >= 0.5f) {
+			
 		else if( timer <= 0.0f) {
 			timer = 3.0f;
 			gameOver = true;
-			//setPanel (0.0f);	// player lost, set alpha back to 0 for the rest of the microgame cycle
 
 		}
 	}

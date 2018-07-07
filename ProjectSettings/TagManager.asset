@@ -22,6 +22,8 @@ TagManager:
   - TagLight
   - flashlightConeCollider
   - dontSpawnHere
+  - bulletHellEnemy
+  - bulletHellSphere
   layers:
   - Default
   - TransparentFX

@@ -28,16 +28,38 @@ public class ghostCode : MonoBehaviour {
 	// - flashlightOnGhost.
 	// - ghostsToZap.
 
+	public Animator ghostAnim;
+
+	public bool ghostsCanDie = true;
+
 	// Should this ghost spawn again?
 	public bool spawnAgain = false;
 
-	void OnTriggerEnter (Collider other) {
-		if (other.gameObject.tag == "dontSpawnHere") {
-			spawnAgain = true;
-			Debug.Log ("This ghost spawned in the wrong area.");
-		}
+	public bool extraGhost = false;
+
+	private float timeAlive = 0;
+
+	void Start() {
+		ghostSFXPlayer.mute = true;
+		// Get the Ghost's Mesh Renderer.
+		ghostMesh = this.GetComponent<MeshRenderer> ();
+		// Get the Ghost's Sphere Collider.
+		ghostSphereCollider = this.GetComponent<SphereCollider> ();
+		// Get the GhostGameAgent GameObject.
+		ghostGameAgentGameObject = GameObject.Find ("ghostGameAgentGameObject");
+
+		ghostAnim = GetComponent<Animator> ();
 
 	}
+
+	void Update () {
+		timeAlive += Time.deltaTime;
+
+		if (timeAlive > .5f) {
+			ghostSFXPlayer.mute = false;
+		}
+	}
+
 
 //	void OnCollisionStay (Collider other) {
 //		if (other.gameObject.tag == "dontSpawnHere") {
@@ -47,31 +69,39 @@ public class ghostCode : MonoBehaviour {
 //
 //	}
 
-	void Start() {
-		// Get the Ghost's Mesh Renderer.
-		ghostMesh = this.GetComponent<MeshRenderer> ();
-		// Get the Ghost's Sphere Collider.
-		ghostSphereCollider = this.GetComponent<SphereCollider> ();
-		// Get the GhostGameAgent GameObject.
-		ghostGameAgentGameObject = GameObject.Find ("ghostGameAgentGameObject");
-
-	}
 
 	// When the ghost hits a trigger zone:
-	void onTriggerEnter (Collider other) {
+	void OnTriggerEnter (Collider other) {
 		// If the ghost is in the flashlight trigger.
-		if (other.gameObject.tag == "flashlightConeCollider") {
+		if (other.gameObject.tag == "flashlightConeCollider" && ghostsCanDie) {
 			// Turn on the bool that shows that flashlight is on the ghost.
 			ghostGameAgentGameObject.GetComponent<ghostGameAgent> ().flashlightOnGhost = true;
+			// Turn on the flashlight animation.
+			ghostAnim.SetBool ("Flashlight", true);
+
+			Debug.Log ("Starting to hit ghost with flashlight.");
 		}
+
+
 	}
 
 	// While you are in the trigger,
 	void OnTriggerStay (Collider other) {
+		if (other.gameObject.tag == "dontSpawnHere") {
+			spawnAgain = true;
+			Debug.Log ("This ghost spawned in the wrong area.");
+		}
+
+		if (other.gameObject.tag == "dontSpawnHere" && extraGhost) {
+			this.gameObject.SetActive (false);
+		}
 		// If the Ghost is Touching the Flashlight's Cone Collider.
-		if (other.gameObject.tag == "flashlightConeCollider") {
+		if (other.gameObject.tag == "flashlightConeCollider" && ghostsCanDie) {
 			// 
-			Debug.Log ("The ghost is in the flashlight collider.");
+
+			//ghostAnimation.Play ("HitByFlashlight");
+
+			//Debug.Log ("The ghost is in the flashlight collider.");
 			// Add time to the Flashlight Hit Timer.
 			timeFlashlightOnGhost += Time.deltaTime;
 			// If that time is greater than the Time Needed to Zap,
@@ -80,10 +110,14 @@ public class ghostCode : MonoBehaviour {
 				ghostSFXPlayer.clip = ghostYellingSFX;
 				// Play the GhostSFX.
 				ghostSFXPlayer.Play ();
+
+				ghostSFXPlayer.loop = false;
 				// Turn off the Ghost's Mesh.
 				ghostMesh.enabled = false;
 				// Turn off the Ghost's Sphere Collider.
 				ghostSphereCollider.enabled = false;
+
+				this.BroadcastMessage("turnOffGhostMethod");
 				// Tell the ghostGameAgent that you need one last ghost to zap.
 				ghostGameAgentGameObject.GetComponent<ghostGameAgent>().ghostsToZap -= 1;
 			}
@@ -98,6 +132,9 @@ public class ghostCode : MonoBehaviour {
 			timeFlashlightOnGhost = 0;
 			// Tell the ghostGameAgent that you are not shining the light on the ghost.
 			ghostGameAgentGameObject.GetComponent<ghostGameAgent> ().flashlightOnGhost = false;
+			// Turn off the flashlight animation.
+			ghostAnim.SetBool ("Flashlight", false);
+			Debug.Log ("No longer hit ghost with flashlight.");
 		}
 	}
 
